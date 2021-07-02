@@ -1,0 +1,25 @@
+on:
+    repository_dispatch:
+        types: [deploy]
+
+jobs:
+    provision:
+        runs-on: ubuntu-latest
+        env:
+            flex: ./flex.sh
+            
+            gcloud_account: ${{ secrets.gcloud_account }}
+            gcloud_project: ${{ secrets.gcloud_project }}
+            gcloud_service_account: ${{ secrets.gcloud_service_account }}
+
+            k8s_user: ${{ secrets.k8s_user }}
+            k8s_cluster_name: ${{ secrets.k8s_cluster_name }}
+            k8s_cluster_server: ${{ secrets.k8s_cluster_server }}
+            k8s_cluster_certificate_authority_data: ${{ secrets.k8s_cluster_certificate_authority_data }}
+
+            artifact_repo_name: ${{ github.event.client_payload.artifact_repo_name }}
+            tag: ${{ github.event.client_payload.tag }}
+
+        steps:
+          - name: Echo
+            run: echo ${{ artifact_repo_name }}
